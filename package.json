@@ -1,0 +1,45 @@
+{
+  "name": "neyveli-eboard",
+  "version": "1.0.0",
+  "lockfileVersion": 3,
+  "requires": true,
+  "author": "Neyveli Township IT Department",
+  "description": "E-Notice Board for Neyveli Township Administration Office",
+  "homepage": "https://github.com/neyveli-township/eboard#readme",
+  "keywords": [
+    "notice-board",
+    "township",
+    "administration",
+    "nodejs",
+    "mysql"
+  ],
+  "license": "MIT",
+  "main": "server.js",
+  "packages": {},
+  "bugs": {
+    "url": "https://github.com/neyveli-township/eboard/issues"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/neyveli-township/eboard.git"
+  },
+  "scripts": {
+    "dev": "nodemon server.js",
+    "setup": "npm install && mkdir -p uploads public",
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "multer": "^2.0.2",
+    "mysql2": "^3.14.3"
+  }
+}

@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Notice Board - Neyveli Township Administration</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2c5aa0;
+            --secondary-color: #f8f9fa;
+            --accent-color: #17a2b8;
+            --urgent-color: #dc3545;
+            --success-color: #28a745;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color), #1e3c72);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            text-align: center;
+        }
+
+        .header-content h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .language-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+
+        .language-toggle .btn {
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .main-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-filter-section {
+            background: var(--secondary-color);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .notice-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+            border-left: 4px solid var(--accent-color);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .notice-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .notice-card.urgent {
+            border-left-color: var(--urgent-color);
+            background: linear-gradient(45deg, #fff, #fff8f8);
+        }
+
+        .urgent-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: var(--urgent-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            font-weight: bold;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 85% 100%, 0 70%);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .category-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+
+        .category-tender { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        .category-circular { background: linear-gradient(135deg, #4834d4, #686de0); }
+        .category-event { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+        .category-general { background: linear-gradient(135deg, #5f27cd, #341f97); }
+
+        .notice-content {
+            flex: 1;
+        }
+
+        .notice-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            line-height: 1.4;
+        }
+
+        .notice-meta {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .notice-description {
+            color: #495057;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .notice-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-action {
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .archive-section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem 0;
+            color: rgba(255,255,255,0.8);
+            margin-top: 2rem;
+        }
+
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+        }
+
+        .no-notices {
+            text-align: center;
+            padding: 3rem;
+            color: #6c757d;
+        }
+
+        .filter-chip {
+            display: inline-block;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .tamil-text {
+            font-family: 'Noto Sans Tamil', Arial, sans-serif;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header-content h1 {
+                font-size: 2rem;
+            }
+            
+            .language-toggle {
+                position: static;
+                text-align: center;
+                margin-top: 1rem;
+            }
+            
+            .main-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+            
+            .notice-card .d-flex {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .category-icon {
+                margin: 0 auto 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header Section -->
+    <div class="header-section">
+        <div class="container">
+            <div class="language-toggle">
+                <button class="btn btn-outline-light" onclick="toggleLanguage()">
+                    <i class="fas fa-language"></i> <span id="langToggleText">தமிழ்</span>
+                </button>
+            </div>
+            <div class="header-content">
+                <h1 id="mainTitle">E-Notice Board</h1>
+                <p id="subTitle">Township Administration Office, Neyveli Township</p>
+                <p id="welcomeText">Stay Updated with Official Announcements</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Statistics Section -->
+        <div class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number" id="totalNotices">0</div>
+                <div id="totalNoticesText">Total Active Notices</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="urgentCount">0</div>
+                <div id="urgentCountText">Urgent Notices</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="todayCount">0</div>
+                <div id="todayCountText">Posted Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="archivedCount">0</div>
+                <div id="archivedCountText">Archived Notices</div>
+            </div>
+        </div>
+
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Search and Filter Section -->
+            <div class="search-filter-section">
+                <h4 id="searchTitle"><i class="fas fa-search"></i> Search & Filter Notices</h4>
+                <div class="row g-3 mt-2">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="searchInput" placeholder="Search notices..." onkeyup="filterNotices()">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="categoryFilter" onchange="filterNotices()">
+                            <option value="">All Categories</option>
+                            <option value="tender">Tender</option>
+                            <option value="circular">Circular</option>
+                            <option value="event">Event</option>
+                            <option value="general">General</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="priorityFilter" onchange="filterNotices()">
+                            <option value="">All Priorities</option>
+                            <option value="true">Urgent Only</option>
+                            <option value="false">Normal Only</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Notices Section -->
+            <div id="noticesSection">
+                <h3 id="noticesTitle"><i class="fas fa-bell"></i> Current Notices</h3>
+                <div id="noticesList">
+                    <div class="loading-spinner">
+                        <div class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Archive Section -->
+            <div class="archive-section">
+                <h4 id="archiveTitle"><i class="fas fa-archive"></i> Archived Notices</h4>
+                <p id="archiveDescription">View older notices that have been automatically archived.</p>
+                <button class="btn btn-outline-primary" onclick="toggleArchive()">
+                    <i class="fas fa-history"></i> <span id="viewArchiveText">View Archive</span>
+                </button>
+                <div id="archiveList" style="display: none; margin-top: 1rem;">
+                    <!-- Archived notices will be shown here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Panel Link -->
+        <div class="text-center mb-4">
+            <a href="/admin" class="btn btn-primary">
+                <i class="fas fa-cog"></i> Admin Panel
+            </a>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variables
+        let currentLang = 'en';
+        let allNotices = [];
+        let archivedNotices = [];
+        let currentFilters = {
+            search: '',
+            category: '',
+            priority: ''
+        };
+
+        // Language Management
+        const translations = {
+            en: {
+                mainTitle: "E-Notice Board",
+                subTitle: "Township Administration Office, Neyveli Township",
+                welcomeText: "Stay Updated with Official Announcements",
+                langToggleText: "தமிழ்",
+                totalNoticesText: "Total Active Notices",
+                urgentCountText: "Urgent Notices",
+                todayCountText: "Posted Today",
+                archivedCountText: "Archived Notices",
+                searchTitle: "Search & Filter Notices",
+                noticesTitle: "Current Notices",
+                archiveTitle: "Archived Notices",
+                archiveDescription: "View older notices that have been automatically archived.",
+                viewArchiveText: "View Archive",
+                footerText: "© 2025 Neyveli Township Administration Office. All Rights Reserved.",
+                footerSubText: "For technical support, contact IT Department",
+                downloadText: "Download",
+                printText: "Print",
+                urgent: "URGENT",
+                posted: "Posted",
+                expires: "Expires",
+                hideArchiveText: "Hide Archive",
+                noNoticesFound: "No notices found matching your criteria."
+            },
+            ta: {
+                mainTitle: "மின்னணு அறிவிப்பு பலகை",
+                subTitle: "டவுன்ஷிப் நிர்வாக அலுவலகம், நெய்வேலி டவுன்ஷிப்",
+                welcomeText: "உத்தியோகபூர்வ அறிவிப்புகளுடன் புதுப்பித்த நிலையில் இருங்கள்",
+                langToggleText: "English",
+                totalNoticesText: "மொத்த செயலில் உள்ள அறிவிப்புகள்",
+                urgentCountText: "அவசர அறிவிப்புகள்",
+                todayCountText: "இன்று வெளியிடப்பட்டவை",
+                archivedCountText: "காப்பகப்படுத்தப்பட்ட அறிவிப்புகள்",
+                searchTitle: "அறிவிப்புகளை தேடுங்கள் & வடிகட்டுங்கள்",
+                noticesTitle: "தற்போதைய அறிவிப்புகள்",
+                archiveTitle: "காப்பகப்படுத்தப்பட்ட அறிவிப்புகள்",
+                archiveDescription: "தானாகவே காப்பகப்படுத்தப்பட்ட பழைய அறிவிப்புகளை பார்க்கவும்.",
+                viewArchiveText: "காப்பகத்தை பார்க்கவும்",
+                footerText: "© 2025 நெய்வேலி டவுன்ஷிப் நிர்வாக அலுவலகம். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.",
+                footerSubText: "தொழில்நுட்ப ஆதரவிற்கு, IT துறையை தொடர்பு கொள்ளவும்",
+                downloadText: "பதிவிறக்கம்",
+                printText: "அச்சிடுக",
+                urgent: "அவசரம்",
+                posted: "வெளியிட்ட தேதி",
+                expires: "காலாவதி தேதி",
+                hideArchiveText: "காப்பகத்தை மறைக்க",
+                noNoticesFound: "உங்கள் அளவுகோல்களுக்கு ஏற்ற அறிவிப்புகள் எதுவும் இல்லை."
+            }
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadNotices();
+            loadStats();
+            updateLanguage();
+        });
+
+        // Toggle language
+        function toggleLanguage() {
+            currentLang = currentLang === 'en' ? 'ta' : 'en';
+            updateLanguage();
+            renderNotices();
+        }
+
+        // Update language text
+        function updateLanguage() {
+            const lang = translations[currentLang];
+            Object.keys(lang).forEach(key => {
+                const element = document.getElementById(key);
+                if (element) {
+                    element.textContent = lang[key];
+                }
+            });
+        }
+
+        // Load notices from API
+        async function loadNotices() {
+            try {
+                const response = await fetch('/api/notices');
+                allNotices = await response.json();
+                renderNotices();
+            } catch (error) {
+                console.error('Error loading notices:', error);
+                showError('Failed to load notices');
+            }
+        }
+
+        // Load statistics from API
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                
+                document.getElementById('totalNotices').textContent = stats.totalActive;
+                document.getElementById('urgentCount').textContent = stats.totalUrgent;
+                document.getElementById('todayCount').textContent = stats.totalToday;
+                document.getElementById('archivedCount').textContent = stats.totalArchived;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Filter notices
+        function filterNotices() {
+            currentFilters.search = document.getElementById('searchInput').value.toLowerCase();
+            currentFilters.category = document.getElementById('categoryFilter').value;
+            currentFilters.priority = document.getElementById('priorityFilter').value;
+            
+            renderNotices();
+        }
+
+        // Render notices
+        function renderNotices() {
+            const noticesList = document.getElementById('noticesList');
+            
+            let filteredNotices = allNotices.filter(notice => {
+                const matchesSearch = !currentFilters.search || 
+                    notice.title.toLowerCase().includes(currentFilters.search) ||
+                    notice.content.toLowerCase().includes(currentFilters.search) ||
+                    (notice.title_ta && notice.title_ta.includes(currentFilters.search)) ||
+                    (notice.content_ta && notice.content_ta.includes(currentFilters.search));
+                
+                const matchesCategory = !currentFilters.category || notice.category === currentFilters.category;
+                const matchesPriority = !currentFilters.priority || notice.priority.toString() === currentFilters.priority;
+                
+                return matchesSearch && matchesCategory && matchesPriority;
+            });
+
+            // Sort by priority (urgent first) then by date
+            filteredNotices.sort((a, b) => {
+                if (a.priority !== b.priority) {
+                    return b.priority - a.priority; // Urgent first
+                }
+                return new Date(b.date_posted) - new Date(a.date_posted); // Newer first
+            });
+
+            if (filteredNotices.length === 0) {
+                noticesList.innerHTML = `
+                    <div class="no-notices">
+                        <i class="fas fa-search fa-3x mb-3"></i>
+                        <p>${translations[currentLang].noNoticesFound}</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const noticesHTML = filteredNotices.map(notice => createNoticeCard(notice)).join('');
+            noticesList.innerHTML = noticesHTML;
+        }
+
+        // Create notice card HTML
+        function createNoticeCard(notice) {
+            const title = currentLang === 'ta' && notice.title_ta ? notice.title_ta : notice.title;
+            const content = currentLang === 'ta' && notice.content_ta ? notice.content_ta : notice.content;
+            const urgentBadge = notice.priority ? `<div class="urgent-badge">${translations[currentLang].urgent}</div>` : '';
+            const categoryClass = `category-${notice.category}`;
+            const cardClass = notice.priority ? 'notice-card urgent' : 'notice-card';
+            
+            const categoryIcons = {
+                tender: 'fas fa-gavel',
+                circular: 'fas fa-bullhorn',
+                event: 'fas fa-calendar-alt',
+                general: 'fas fa-info-circle'
+            };
+
+            const icon = categoryIcons[notice.category] || 'fas fa-info-circle';
+            
+            return `
+                <div class="${cardClass}">
+                    ${urgentBadge}
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <div class="category-icon ${categoryClass}">
+                                <i class="${icon}"></i>
+                            </div>
+                            <div class="notice-content">
+                                <h5 class="notice-title ${currentLang === 'ta' ? 'tamil-text' : ''}">${title}</h5>
+                                <div class="notice-meta">
+                                    <small><i class="fas fa-calendar"></i> ${translations[currentLang].posted}: ${formatDate(notice.date_posted)}</small>
+                                    <small class="ms-3"><i class="fas fa-clock"></i> ${translations[currentLang].expires}: ${formatDate(notice.expiry_date)}</small>
+                                    <small class="ms-3"><i class="fas fa-tag"></i> ${capitalizeFirst(notice.category)}</small>
+                                </div>
+                                <div class="notice-description ${currentLang === 'ta' ? 'tamil-text' : ''}">${content}</div>
+                                <div class="notice-actions">
+                                    ${notice.file_path ? `<button class="btn btn-sm btn-outline-primary btn-action" onclick="downloadFile('${notice.file_path}')">
+                                        <i class="fas fa-download"></i> ${translations[currentLang].downloadText}
+                                    </button>` : ''}
+                                    <button class="btn btn-sm btn-outline-secondary btn-action" onclick="printNotice(${notice.id})">
+                                        <i class="fas fa-print"></i> ${translations[currentLang].printText}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Toggle archive section
+        async function toggleArchive() {
+            const archiveList = document.getElementById('archiveList');
+            const toggleButton = document.getElementById('viewArchiveText');
+            
+            if (archiveList.style.display === 'none') {
+                try {
+                    const response = await fetch('/api/notices?archived=true');
+                    archivedNotices = await response.json();
+                    
+                    const archiveHTML = archivedNotices.map(notice => createNoticeCard(notice)).join('');
+                    archiveList.innerHTML = archiveHTML.length ? archiveHTML : `
+                        <div class="no-notices">
+                            <p>No archived notices found.</p>
+                        </div>
+                    `;
+                    
+                    archiveList.style.display = 'block';
+                    toggleButton.textContent = translations[currentLang].hideArchiveText;
+                } catch (error) {
+                    console.error('Error loading archived notices:', error);
+                }
+            } else {
+                archiveList.style.display = 'none';
+                toggleButton.textContent = translations[currentLang].viewArchiveText;
+            }
+        }
+
+        // Download file
+        function downloadFile(filePath) {
+            if (filePath) {
+                window.open(`/${filePath}`, '_blank');
+            }
+        }
+
+        // Print notice
+        function printNotice(noticeId) {
+            const notice = allNotices.find(n => n.id === noticeId);
+            if (!notice) return;
+
+            const title = currentLang === 'ta' && notice.title_ta ? notice.title_ta : notice.title;
+            const content = currentLang === 'ta' && notice.content_ta ? notice.content_ta : notice.content;
+            
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write(`
+                <html>
+                    <head>
+                        <title>${title}</title>
+                        <style>
+                            body { font-family: Arial, sans-serif; margin: 20px; }
+                            .header { text-align: center; border-bottom: 2px solid #333; padding-bottom: 10px; margin-bottom: 20px; }
+                            .notice-title { font-size: 1.5em; font-weight: bold; margin: 20px 0; }
+                            .notice-meta { color: #666; margin-bottom: 15px; }
+                            .notice-content { line-height: 1.6; }
+                            .tamil-text { font-family: 'Noto Sans Tamil', Arial, sans-serif; }
+                        </style>
+                    </head>
+                    <body>
+                        <div class="header">
+                            <h2>Neyveli Township Administration Office</h2>
+                            <h3>E-Notice Board</h3>
+                        </div>
+                        <div class="notice-title ${currentLang === 'ta' ? 'tamil-text' : ''}">${title}</div>
+                        <div class="notice-meta">
+                            Posted: ${formatDate(notice.date_posted)} | 
+                            Expires: ${formatDate(notice.expiry_date)} | 
+                            Category: ${capitalizeFirst(notice.category)}
+                            ${notice.priority ? ' | URGENT' : ''}
+                        </div>
+                        <div class="notice-content ${currentLang === 'ta' ? 'tamil-text' : ''}">${content}</div>
+                    </body>
+                </html>
+            `);
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+        // Utility functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-IN', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric'
+            });
+        }
+
+        function capitalizeFirst(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
+        function showError(message) {
+            const noticesList = document.getElementById('noticesList');
+            noticesList.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    <i class="fas fa-exclamation-triangle"></i> ${message}
+                </div>
+            `;
+        }
+
+        // Auto-refresh notices every 5 minutes
+        setInterval(loadNotices, 5 * 60 * 1000);
+        setInterval(loadStats, 5 * 60 * 1000);
+    </script>
+</body>
+</html>
