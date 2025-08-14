@@ -266,7 +266,6 @@
     </style>
 </head>
 <body>
-    <!-- Header Section -->
     <div class="header-section">
         <div class="container">
             <div class="language-toggle">
@@ -283,7 +282,6 @@
     </div>
 
     <div class="container">
-        <!-- Statistics Section -->
         <div class="stats-section">
             <div class="stat-card">
                 <div class="stat-number" id="totalNotices">0</div>
@@ -303,9 +301,7 @@
             </div>
         </div>
 
-        <!-- Main Container -->
         <div class="main-container">
-            <!-- Search and Filter Section -->
             <div class="search-filter-section">
                 <h4 id="searchTitle"><i class="fas fa-search"></i> Search & Filter Notices</h4>
                 <div class="row g-3 mt-2">
@@ -331,7 +327,6 @@
                 </div>
             </div>
 
-            <!-- Notices Section -->
             <div id="noticesSection">
                 <h3 id="noticesTitle"><i class="fas fa-bell"></i> Current Notices</h3>
                 <div id="noticesList">
@@ -343,7 +338,6 @@
                 </div>
             </div>
 
-            <!-- Archive Section -->
             <div class="archive-section">
                 <h4 id="archiveTitle"><i class="fas fa-archive"></i> Archived Notices</h4>
                 <p id="archiveDescription">View older notices that have been automatically archived.</p>
@@ -351,12 +345,10 @@
                     <i class="fas fa-history"></i> <span id="viewArchiveText">View Archive</span>
                 </button>
                 <div id="archiveList" style="display: none; margin-top: 1rem;">
-                    <!-- Archived notices will be shown here -->
                 </div>
             </div>
         </div>
 
-        <!-- Admin Panel Link -->
         <div class="text-center mb-4">
             <a href="/admin" class="btn btn-primary">
                 <i class="fas fa-cog"></i> Admin Panel
@@ -365,7 +357,6 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Global variables
         let currentLang = 'en';
         let allNotices = [];
         let archivedNotices = [];
@@ -375,7 +366,6 @@
             priority: ''
         };
 
-        // Language Management
         const translations = {
             en: {
                 mainTitle: "E-Notice Board",
@@ -427,21 +417,18 @@
             }
         };
 
-        // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
             loadNotices();
             loadStats();
             updateLanguage();
         });
 
-        // Toggle language
         function toggleLanguage() {
             currentLang = currentLang === 'en' ? 'ta' : 'en';
             updateLanguage();
             renderNotices();
         }
 
-        // Update language text
         function updateLanguage() {
             const lang = translations[currentLang];
             Object.keys(lang).forEach(key => {
@@ -452,7 +439,6 @@
             });
         }
 
-        // Load notices from API
         async function loadNotices() {
             try {
                 const response = await fetch('/api/notices');
@@ -464,7 +450,6 @@
             }
         }
 
-        // Load statistics from API
         async function loadStats() {
             try {
                 const response = await fetch('/api/stats');
@@ -479,7 +464,6 @@
             }
         }
 
-        // Filter notices
         function filterNotices() {
             currentFilters.search = document.getElementById('searchInput').value.toLowerCase();
             currentFilters.category = document.getElementById('categoryFilter').value;
@@ -488,7 +472,6 @@
             renderNotices();
         }
 
-        // Render notices
         function renderNotices() {
             const noticesList = document.getElementById('noticesList');
             
@@ -505,12 +488,11 @@
                 return matchesSearch && matchesCategory && matchesPriority;
             });
 
-            // Sort by priority (urgent first) then by date
             filteredNotices.sort((a, b) => {
                 if (a.priority !== b.priority) {
-                    return b.priority - a.priority; // Urgent first
+                    return b.priority - a.priority; 
                 }
-                return new Date(b.date_posted) - new Date(a.date_posted); // Newer first
+                return new Date(b.date_posted) - new Date(a.date_posted); 
             });
 
             if (filteredNotices.length === 0) {
@@ -527,7 +509,6 @@
             noticesList.innerHTML = noticesHTML;
         }
 
-        // Create notice card HTML
         function createNoticeCard(notice) {
             const title = currentLang === 'ta' && notice.title_ta ? notice.title_ta : notice.title;
             const content = currentLang === 'ta' && notice.content_ta ? notice.content_ta : notice.content;
@@ -575,7 +556,6 @@
             `;
         }
 
-        // Toggle archive section
         async function toggleArchive() {
             const archiveList = document.getElementById('archiveList');
             const toggleButton = document.getElementById('viewArchiveText');
@@ -603,14 +583,12 @@
             }
         }
 
-        // Download file
         function downloadFile(filePath) {
             if (filePath) {
                 window.open(`/${filePath}`, '_blank');
             }
         }
 
-        // Print notice
         function printNotice(noticeId) {
             const notice = allNotices.find(n => n.id === noticeId);
             if (!notice) return;
@@ -652,7 +630,6 @@
             printWindow.print();
         }
 
-        // Utility functions
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-IN', {
@@ -675,7 +652,6 @@
             `;
         }
 
-        // Auto-refresh notices every 5 minutes
         setInterval(loadNotices, 5 * 60 * 1000);
         setInterval(loadStats, 5 * 60 * 1000);
     </script>
