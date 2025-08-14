@@ -189,7 +189,7 @@
     </style>
 </head>
 <body>
-    <!-- Header Section -->
+    
     <div class="header-section">
         <div class="container">
             <div class="row align-items-center">
@@ -208,7 +208,7 @@
 
     <div class="container">
         <div class="admin-container">
-            <!-- Navigation Tabs -->
+            
             <ul class="nav nav-tabs" id="adminTabs" role="tablist">
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab">
@@ -232,9 +232,9 @@
                 </li>
             </ul>
 
-            <!-- Tab Content -->
+            
             <div class="tab-content" id="adminTabContent">
-                <!-- Dashboard Tab -->
+                
                 <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
                     <h3><i class="fas fa-chart-bar"></i> Dashboard Overview</h3>
                     <div class="stats-grid">
@@ -260,7 +260,7 @@
                         <div class="col-md-6">
                             <h5>Recent Activities</h5>
                             <div id="recentActivities">
-                                <!-- Recent activities will be loaded here -->
+                                
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -280,7 +280,7 @@
                     </div>
                 </div>
 
-                <!-- Add Notice Tab -->
+                
                 <div class="tab-pane fade" id="add-notice" role="tabpanel">
                     <h3><i class="fas fa-plus"></i> Add New Notice</h3>
                     <form id="addNoticeForm" enctype="multipart/form-data">
@@ -365,7 +365,7 @@
                     </form>
                 </div>
 
-                <!-- Manage Notices Tab -->
+                
                 <div class="tab-pane fade" id="manage-notices" role="tabpanel">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3><i class="fas fa-list"></i> Manage Active Notices</h3>
@@ -377,11 +377,11 @@
                         </div>
                     </div>
                     <div id="manageNoticesList">
-                        <!-- Active notices will be loaded here -->
+                        
                     </div>
                 </div>
 
-                <!-- Archived Tab -->
+                
                 <div class="tab-pane fade" id="archived" role="tabpanel">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                         <h3><i class="fas fa-archive"></i> Archived Notices</h3>
@@ -390,14 +390,14 @@
                         </button>
                     </div>
                     <div id="archivedNoticesList">
-                        <!-- Archived notices will be loaded here -->
+                       
                     </div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Edit Notice Modal -->
+    
     <div class="modal fade" id="editNoticeModal" tabindex="-1">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
@@ -487,25 +487,25 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Global variables
+        
         let allNotices = [];
         let archivedNotices = [];
 
-        // Initialize the application
+        
         document.addEventListener('DOMContentLoaded', function() {
             loadDashboardData();
             setupFileUpload();
             setMinDate();
         });
 
-        // Set minimum date for expiry date inputs
+        
         function setMinDate() {
             const today = new Date().toISOString().split('T')[0];
             document.getElementById('noticeExpiry').setAttribute('min', today);
             document.getElementById('editNoticeExpiry').setAttribute('min', today);
         }
 
-        // Setup file upload drag and drop
+        
         function setupFileUpload() {
             const fileUploadArea = document.getElementById('fileUploadArea');
             const fileInput = document.getElementById('noticeFile');
@@ -544,7 +544,7 @@
             }
         }
 
-        // Load dashboard data
+        
         async function loadDashboardData() {
             try {
                 const [statsResponse, noticesResponse] = await Promise.all([
@@ -564,7 +564,7 @@
             }
         }
 
-        // Update dashboard statistics
+       
         function updateDashboardStats(stats) {
             document.getElementById('dashTotalNotices').textContent = stats.totalActive;
             document.getElementById('dashUrgentCount').textContent = stats.totalUrgent;
@@ -572,7 +572,7 @@
             document.getElementById('dashArchivedCount').textContent = stats.totalArchived;
         }
 
-        // Load recent activities
+       
         function loadRecentActivities() {
             const recentActivities = document.getElementById('recentActivities');
             const recentNotices = allNotices
@@ -595,7 +595,6 @@
             recentActivities.innerHTML = activitiesHTML;
         }
 
-        // Load notices for management
         function loadManageNotices() {
             const manageList = document.getElementById('manageNoticesList');
             
@@ -608,7 +607,7 @@
             manageList.innerHTML = noticesHTML;
         }
 
-        // Create notice item for management
+        
         function createManageNoticeItem(notice) {
             const urgentClass = notice.priority ? 'urgent' : '';
             const urgentBadge = notice.priority ? '<span class="urgent-badge me-2">URGENT</span>' : '';
@@ -641,7 +640,7 @@
             `;
         }
 
-        // Add new notice
+        
         document.getElementById('addNoticeForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -680,7 +679,7 @@
             }
         });
 
-        // Edit notice
+       
         function editNotice(noticeId) {
             const notice = allNotices.find(n => n.id === noticeId);
             if (!notice) return;
@@ -711,7 +710,7 @@
             new bootstrap.Modal(document.getElementById('editNoticeModal')).show();
         }
 
-        // Update notice
+        
         async function updateNotice() {
             const noticeId = document.getElementById('editNoticeId').value;
             const formData = new FormData();
@@ -748,7 +747,7 @@
             }
         }
 
-        // Archive notice
+        
         async function archiveNotice(noticeId) {
             if (!confirm('Are you sure you want to archive this notice?')) return;
 
@@ -769,7 +768,7 @@
             }
         }
 
-        // Delete notice
+        
         async function deleteNotice(noticeId) {
             if (!confirm('Are you sure you want to permanently delete this notice?')) return;
 
@@ -790,7 +789,7 @@
             }
         }
 
-        // Load archived notices
+        
         async function loadArchivedNotices() {
             try {
                 const response = await fetch('/api/notices?archived=true');
@@ -811,7 +810,6 @@
             }
         }
 
-        // Create archived notice item
         function createArchivedNoticeItem(notice) {
             return `
                 <div class="notice-item">
@@ -834,7 +832,6 @@
             `;
         }
 
-        // Switch tabs
         function switchTab(tabId) {
             const tab = document.getElementById(tabId + '-tab');
             const tabInstance = new bootstrap.Tab(tab);
@@ -845,7 +842,6 @@
             }
         }
 
-        // Search manage notices
         function searchManageNotices() {
             const searchTerm = document.getElementById('manageSearchInput').value.toLowerCase();
             const filteredNotices = allNotices.filter(notice => 
@@ -863,7 +859,6 @@
             }
         }
 
-        // Archive expired notices
         async function archiveExpired() {
             if (!confirm('Archive all expired notices?')) return;
 
@@ -882,8 +877,6 @@
                 showAlert('Error archiving expired notices', 'danger');
             }
         }
-
-        // Clear all archived notices
         async function clearAllArchived() {
             if (!confirm('Are you sure you want to permanently delete all archived notices? This action cannot be undone.')) return;
 
@@ -901,20 +894,17 @@
             }
         }
 
-        // Download file
         function downloadFile(filePath) {
             if (filePath) {
                 window.open(`/${filePath}`, '_blank');
             }
         }
 
-        // Refresh data
         function refreshData() {
             loadDashboardData();
             showAlert('Data refreshed successfully!', 'info');
         }
 
-        // Utility functions
         function formatDate(dateString) {
             const date = new Date(dateString);
             return date.toLocaleDateString('en-IN', {
@@ -943,12 +933,10 @@
             }, 5000);
         }
 
-        // Tab event listeners
         document.getElementById('archived-tab').addEventListener('shown.bs.tab', function () {
             loadArchivedNotices();
         });
 
-        // Auto-refresh data every 5 minutes
         setInterval(loadDashboardData, 5 * 60 * 1000);
     </script>
 </body>
