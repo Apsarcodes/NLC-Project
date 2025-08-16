@@ -30,7 +30,7 @@ const upload = multer({ storage: storage });
 const dbConfig = {
     host: 'localhost',
     user: 'root',
-    password: 'Apsar_3012', 
+    password: 'Vaagi', 
     database: 'neyveli_eboard'
 };
 

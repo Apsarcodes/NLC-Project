@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Translator Using API</title>
+  
+
+</head>
+<body>
+<!-- partial:index.partial.html -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Google Translate</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ"
+      crossorigin="anonymous"
+    />
+    <link rel="icon" href="//ssl.gstatic.com/translate/favicon.ico" />
+  </head>
+  <body>
+    <!-- Nav Bar -->
+
+    <nav class="navbar bg-body-tertiary">
+      <div class="container-fluid">
+        <a class="navbar-brand d-flex" href="#">
+          <img
+            src="//ssl.gstatic.com/translate/favicon.ico"
+            alt="Logo"
+            height="50"
+            class="d-inline-block align-text-top mx-3"
+          />
+          <h1 class="display-6">Translator</h1>
+        </a>
+      </div>
+    </nav>
+    <hr />
+
+    <div class="lrContainer container d-flex justify-content-evenly">
+      <div class="left">
+        <form>
+            <select
+          class="w-25 bg-transparent p-1 border border-primary rounded-1"
+          name="ipLan"
+          id="ipLan"
+        >
+          <option value="af">Afrikaans</option>
+          <option value="ar">Arabic</option>
+          <option value="bg">Bulgarian</option>
+          <option value="ca">Catalan</option>
+          <option value="cs">Czech</option>
+          <option value="da">Danish</option>
+          <option value="de">German</option>
+          <option value="el">Greek</option>
+          <option value="en" selected>English</option>
+          <option value="es">Spanish</option>
+          <option value="et">Estonian</option>
+          <option value="fi">Finnish</option>
+          <option value="fr">French</option>
+          <option value="he">Hebrew</option>
+          <option value="hi">Hindi</option>
+          <option value="hr">Croatian</option>
+          <option value="hu">Hungarian</option>
+          <option value="id">Indonesian</option>
+          <option value="is">Icelandic</option>
+          <option value="it">Italian</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="lt">Lithuanian</option>
+          <option value="lv">Latvian</option>
+          <option value="mk">Macedonian</option>
+          <option value="ml">Malayalam</option>
+          <option value="mr">Marathi</option>
+          <option value="nl">Dutch</option>
+          <option value="no">Norwegian</option>
+          <option value="pl">Polish</option>
+          <option value="pt">Portuguese</option>
+          <option value="ro">Romanian</option>
+          <option value="ru">Russian</option>
+          <option value="sk">Slovak</option>
+          <option value="sl">Slovenian</option>
+          <option value="sq">Albanian</option>
+          <option value="sr">Serbian</option>
+          <option value="sv">Swedish</option>
+          <option value="ta">Tamil</option>
+          <option value="te">Telugu</option>
+          <option value="th">Thai</option>
+          <option value="tr">Turkish</option>
+          <option value="uk">Ukrainian</option>
+          <option value="vi">Vietnamese</option>
+          <option value="zh">Chinese</option>
+        </select>
+
+        <div class="form-floating w-25 my-2">
+          <textarea
+            rows="10"
+            cols="34"
+            class="fs-4"
+            placeholder="Enter Text"
+            id="ipStr"
+            oninput="ajaxFun(this.value)"
+            required
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="btn align-self-center">
+        <button onclick="translate()" type="button" id="btn" class="btn btn-outline-primary">Translate</button>
+      </div>
+        </form>
+
+      <div class="right">
+        <select
+          class="w-25 bg-transparent p-1 border border-primary rounded-1"
+          name="ipLan"
+          id="opLan"
+        >
+          <option value="af">Afrikaans</option>
+          <option value="ar">Arabic</option>
+          <option value="bg">Bulgarian</option>
+          <option value="ca">Catalan</option>
+          <option value="cs">Czech</option>
+          <option value="da">Danish</option>
+          <option value="de">German</option>
+          <option value="el">Greek</option>
+          <option value="gu">Gujarati</option>
+          <option value="en">English</option>
+          <option value="es">Spanish</option>
+          <option value="et">Estonian</option>
+          <option value="fi">Finnish</option>
+          <option value="fr">French</option>
+          <option value="he">Hebrew</option>
+          <option value="hi" selected>Hindi</option>
+          <option value="hr">Croatian</option>
+          <option value="hu">Hungarian</option>
+          <option value="id">Indonesian</option>
+          <option value="is">Icelandic</option>
+          <option value="it">Italian</option>
+          <option value="ja">Japanese</option>
+          <option value="ko">Korean</option>
+          <option value="lt">Lithuanian</option>
+          <option value="lv">Latvian</option>
+          <option value="mk">Macedonian</option>
+          <option value="ml">Malayalam</option>
+          <option value="mr">Marathi</option>
+          <option value="nl">Dutch</option>
+          <option value="no">Norwegian</option>
+          <option value="pl">Polish</option>
+          <option value="pt">Portuguese</option>
+          <option value="ro">Romanian</option>
+          <option value="ru">Russian</option>
+          <option value="sk">Slovak</option>
+          <option value="sl">Slovenian</option>
+          <option value="sq">Albanian</option>
+          <option value="sr">Serbian</option>
+          <option value="sv">Swedish</option>
+          <option value="ta">Tamil</option>
+          <option value="te">Telugu</option>
+          <option value="th">Thai</option>
+          <option value="tr">Turkish</option>
+          <option value="uk">Ukrainian</option>
+          <option value="vi">Vietnamese</option>
+          <option value="zh">Chinese</option>
+        </select>
+
+        <div class="form-floating w-25 my-2">
+          <textarea
+            rows="10"
+            cols="34"
+            class="fs-4"
+            placeholder="Translation"
+            id="opStr"
+            readonly
+          ></textarea>
+        </div>
+      </div>
+    </div>
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+      crossorigin="anonymous"
+    ></script>
+    <script src="translator.js"></script>
+  </body>
+</html>
+<!-- partial -->
+  <script  src="./script.js"></script>
+
+</body>
+</html>

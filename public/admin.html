@@ -4,17 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Panel - E-Notice Board</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="icon" href="/nlc logo.jpg" type="jpg">
-    <link rel="stylesheet" href="styles.css">
     <style>
-        :root {
-            --primary-color: #2c5aa0;
-            --secondary-color: #f8f9fa;
-            --accent-color: #17a2b8;
-            --urgent-color: #dc3545;
-            --success-color: #28a745;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
@@ -23,118 +17,110 @@
             min-height: 100vh;
         }
 
-        .header-section {
-            background: linear-gradient(135deg, var(--primary-color), #1e3c72);
-            color: white;
-            padding: 1.5rem 0;
-            margin-bottom: 2rem;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
 
-        .admin-container {
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo h1 {
+            color: #2c3e50;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            color: #3498db;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border: 2px solid #3498db;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
             padding: 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 0.5rem;
             margin-bottom: 2rem;
             backdrop-filter: blur(10px);
         }
 
-        .nav-tabs .nav-link {
-            color: var(--primary-color);
+        .nav-tab {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: none;
             border: none;
-            padding: 1rem 1.5rem;
-            font-weight: 500;
-            border-radius: 10px 10px 0 0;
-            margin-right: 0.5rem;
-        }
-
-        .nav-tabs .nav-link.active {
-            background-color: var(--primary-color);
             color: white;
-            border: none;
-        }
-
-        .form-control, .form-select {
-            border-radius: 8px;
-            padding: 0.75rem;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 500;
-        }
-
-        .btn-danger {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-        }
-
-        .btn-warning {
-            padding: 0.5rem 1rem;
-            border-radius: 8px;
-        }
-
-        .notice-item {
-            border: 1px solid #dee2e6;
+            cursor: pointer;
             border-radius: 10px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            background: white;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            font-weight: 500;
         }
 
-        .notice-item.urgent {
-            border-left: 4px solid var(--urgent-color);
-        }
-
-        .notice-title {
-            font-size: 1.2rem;
-            font-weight: 600;
+        .nav-tab.active {
+            background: rgba(255, 255, 255, 0.9);
             color: #2c3e50;
-            margin-bottom: 0.5rem;
-        }
-
-        .notice-meta {
-            color: #6c757d;
-            font-size: 0.9rem;
-            margin-bottom: 0.8rem;
-        }
-
-        .notice-actions {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .urgent-badge {
-            background: var(--urgent-color);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-weight: bold;
-        }
-
-        .category-badge {
-            background: var(--accent-color);
-            color: white;
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            font-size: 0.8rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
         }
 
         .tab-content {
-            padding: 2rem 0;
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeInUp 0.5s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .stats-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
+            gap: 1.5rem;
             margin-bottom: 2rem;
         }
 
@@ -142,802 +128,1017 @@
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: white;
             padding: 1.5rem;
-            border-radius: 10px;
+            border-radius: 15px;
             text-align: center;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
         }
 
         .stat-number {
-            font-size: 2rem;
-            font-weight: bold;
+            font-size: 2.5rem;
+            font-weight: 700;
+            display: block;
+        }
+
+        .stat-label {
+            opacity: 0.9;
+            margin-top: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
             margin-bottom: 0.5rem;
+            color: #2c3e50;
+            font-weight: 500;
         }
 
-        .file-upload-area {
-            border: 2px dashed #ccc;
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid #e1e8ed;
             border-radius: 10px;
-            padding: 2rem;
-            text-align: center;
-            margin: 1rem 0;
-            transition: border-color 0.3s ease;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .file-upload-area:hover {
-            border-color: var(--primary-color);
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
         }
 
-        .file-upload-area.dragover {
-            border-color: var(--primary-color);
-            background-color: rgba(44, 90, 160, 0.1);
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
         }
 
         @media (max-width: 768px) {
-            .admin-container {
-                margin: 1rem;
-                padding: 1rem;
+            .form-row {
+                grid-template-columns: 1fr;
             }
-            
-            .notice-actions {
-                flex-direction: column;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(52, 152, 219, 0.3);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(39, 174, 96, 0.3);
+        }
+
+        .notices-grid {
+            display: grid;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .notice-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid #3498db;
+        }
+
+        .notice-card.priority {
+            border-left-color: #e74c3c;
+        }
+
+        .notice-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .notice-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+        }
+
+        .notice-meta {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.9rem;
+            color: #7f8c8d;
+            margin-bottom: 0.5rem;
+        }
+
+        .notice-content {
+            color: #34495e;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .notice-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .file-upload {
+            border: 2px dashed #3498db;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: #2980b9;
+            background: rgba(52, 152, 219, 0.05);
+        }
+
+        .file-upload.dragover {
+            border-color: #2980b9;
+            background: rgba(52, 152, 219, 0.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .quick-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .search-filter {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .search-filter input,
+        .search-filter select {
+            padding: 0.5rem;
+            border: 2px solid #e1e8ed;
+            border-radius: 8px;
+            min-width: 200px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #e1e8ed;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
             }
-            
-            .notice-actions .btn {
-                width: 100%;
-                margin-bottom: 0.5rem;
-            }
+        }
+
+        .activities-list {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .activity-item {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #e1e8ed;
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
         }
     </style>
 </head>
 <body>
-    
-    <div class="header-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-8">
-                    <h1><i class="fas fa-cogs"></i> Admin Panel - E-Notice Board</h1>
-                    <p>Neyveli Township Administration Office</p>
-                </div>
-                <div class="col-md-4 text-end">
-                    <a href="/" class="btn btn-outline-light">
-                        <i class="fas fa-home"></i> Back to Public View
-                    </a>
-                </div>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <h1>📋 E-Notice Board</h1>
+                <span style="color: #7f8c8d;">Neyveli Township Administration Office</span>
             </div>
+            <a href="/" class="back-link">🏠 Back to Public View</a>
         </div>
-    </div>
+    </header>
 
     <div class="container">
-        <div class="admin-container">
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="dashboard">📊 Dashboard</button>
+            <button class="nav-tab" data-tab="add-notice">➕ Add Notice</button>
+            <button class="nav-tab" data-tab="manage-notices">📝 Manage Notices</button>
+            <button class="nav-tab" data-tab="archived">🗄️ Archived</button>
+        </nav>
+
+        <div id="dashboard" class="tab-content active">
+            <h2 style="margin-bottom: 1.5rem; color: #2c3e50;">📊 Dashboard Overview</h2>
             
-            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link active" id="dashboard-tab" data-bs-toggle="tab" data-bs-target="#dashboard" type="button" role="tab">
-                        <i class="fas fa-chart-bar"></i> Dashboard
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="add-notice-tab" data-bs-toggle="tab" data-bs-target="#add-notice" type="button" role="tab">
-                        <i class="fas fa-plus"></i> Add Notice
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="manage-notices-tab" data-bs-toggle="tab" data-bs-target="#manage-notices" type="button" role="tab">
-                        <i class="fas fa-list"></i> Manage Notices
-                    </button>
-                </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="archived-tab" data-bs-toggle="tab" data-bs-target="#archived" type="button" role="tab">
-                        <i class="fas fa-archive"></i> Archived
-                    </button>
-                </li>
-            </ul>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number" id="totalActive">0</span>
+                    <span class="stat-label">Total Active Notices</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalUrgent">0</span>
+                    <span class="stat-label">Urgent Notices</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalToday">0</span>
+                    <span class="stat-label">Posted Today</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number" id="totalArchived">0</span>
+                    <span class="stat-label">Archived Notices</span>
+                </div>
+            </div>
 
-            
-            <div class="tab-content" id="adminTabContent">
-                
-                <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
-                    <h3><i class="fas fa-chart-bar"></i> Dashboard Overview</h3>
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-number" id="dashTotalNotices">0</div>
-                            <div>Total Active Notices</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="dashUrgentCount">0</div>
-                            <div>Urgent Notices</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="dashTodayCount">0</div>
-                            <div>Posted Today</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-number" id="dashArchivedCount">0</div>
-                            <div>Archived Notices</div>
-                        </div>
-                    </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h5>Recent Activities</h5>
-                            <div id="recentActivities">
-                                
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <h5>Quick Actions</h5>
-                            <div class="d-grid gap-2">
-                                <button class="btn btn-primary" onclick="switchTab('add-notice')">
-                                    <i class="fas fa-plus"></i> Add New Notice
-                                </button>
-                                <button class="btn btn-outline-primary" onclick="archiveExpired()">
-                                    <i class="fas fa-archive"></i> Archive Expired Notices
-                                </button>
-                                <button class="btn btn-outline-secondary" onclick="refreshData()">
-                                    <i class="fas fa-sync"></i> Refresh Data
-                                </button>
-                            </div>
-                        </div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem;">
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #2c3e50;">📈 Recent Activities</h3>
+                    <div class="activities-list">
+                        <div class="activity-item">System initialized successfully</div>
+                        <div class="activity-item">Sample data loaded</div>
+                        <div class="activity-item">Auto-archive scheduler active</div>
                     </div>
                 </div>
-
                 
-                <div class="tab-pane fade" id="add-notice" role="tabpanel">
-                    <h3><i class="fas fa-plus"></i> Add New Notice</h3>
-                    <form id="addNoticeForm" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="noticeTitle" class="form-label">Title (English) *</label>
-                                    <input type="text" class="form-control" id="noticeTitle" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="noticeTitleTa" class="form-label">Title (Tamil)</label>
-                                    <input type="text" class="form-control" id="noticeTitleTa">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="noticeContent" class="form-label">Content (English) *</label>
-                                    <textarea class="form-control" id="noticeContent" rows="4" required></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="noticeContentTa" class="form-label">Content (Tamil)</label>
-                                    <textarea class="form-control" id="noticeContentTa" rows="4"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="noticeCategory" class="form-label">Category *</label>
-                                    <select class="form-select" id="noticeCategory" required>
-                                        <option value="">Select Category</option>
-                                        <option value="tender">Tender</option>
-                                        <option value="circular">Circular</option>
-                                        <option value="event">Event</option>
-                                        <option value="general">General</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="noticePriority" class="form-label">Priority</label>
-                                    <select class="form-select" id="noticePriority">
-                                        <option value="false">Normal</option>
-                                        <option value="true">Urgent</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="noticeExpiry" class="form-label">Expiry Date *</label>
-                                    <input type="date" class="form-control" id="noticeExpiry" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="noticeFile" class="form-label">Attach File (Optional)</label>
-                            <div class="file-upload-area" id="fileUploadArea">
-                                <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-                                <p>Drag and drop a file here, or click to select</p>
-                                <input type="file" class="form-control" id="noticeFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png" style="display: none;">
-                            </div>
-                            <div id="fileInfo" class="mt-2"></div>
-                        </div>
-
-                        <div class="mb-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save"></i> Create Notice
-                            </button>
-                            <button type="reset" class="btn btn-outline-secondary ms-2">
-                                <i class="fas fa-undo"></i> Reset Form
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                
-                <div class="tab-pane fade" id="manage-notices" role="tabpanel">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3><i class="fas fa-list"></i> Manage Active Notices</h3>
-                        <div class="input-group" style="max-width: 300px;">
-                            <input type="text" class="form-control" id="manageSearchInput" placeholder="Search notices...">
-                            <button class="btn btn-outline-secondary" onclick="searchManageNotices()">
-                                <i class="fas fa-search"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div id="manageNoticesList">
-                        
-                    </div>
-                </div>
-
-                
-                <div class="tab-pane fade" id="archived" role="tabpanel">
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h3><i class="fas fa-archive"></i> Archived Notices</h3>
-                        <button class="btn btn-outline-danger" onclick="clearAllArchived()">
-                            <i class="fas fa-trash"></i> Clear All Archived
-                        </button>
-                    </div>
-                    <div id="archivedNoticesList">
-                       
+                <div>
+                    <h3 style="margin-bottom: 1rem; color: #2c3e50;">⚡ Quick Actions</h3>
+                    <div class="quick-actions" style="flex-direction: column;">
+                        <button class="btn btn-primary" onclick="switchTab('add-notice')">➕ Add New Notice</button>
+                        <button class="btn btn-secondary" onclick="archiveExpired()">🗄️ Archive Expired Notices</button>
+                        <button class="btn btn-success" onclick="loadStats()">🔄 Refresh Data</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    
-    <div class="modal fade" id="editNoticeModal" tabindex="-1">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Edit Notice</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div id="add-notice" class="tab-content">
+            <h2 style="margin-bottom: 1.5rem; color: #2c3e50;">➕ Add New Notice</h2>
+            
+            <form id="addNoticeForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="title">Title (English) *</label>
+                        <input type="text" id="title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="title_ta">Title (Tamil)</label>
+                        <input type="text" id="title_ta" name="title_ta">
+                    </div>
                 </div>
-                <div class="modal-body">
-                    <form id="editNoticeForm" enctype="multipart/form-data">
-                        <input type="hidden" id="editNoticeId">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="editNoticeTitle" class="form-label">Title (English) *</label>
-                                    <input type="text" class="form-control" id="editNoticeTitle" required>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="editNoticeTitleTa" class="form-label">Title (Tamil)</label>
-                                    <input type="text" class="form-control" id="editNoticeTitleTa">
-                                </div>
-                            </div>
-                        </div>
 
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="editNoticeContent" class="form-label">Content (English) *</label>
-                                    <textarea class="form-control" id="editNoticeContent" rows="4" required></textarea>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="mb-3">
-                                    <label for="editNoticeContentTa" class="form-label">Content (Tamil)</label>
-                                    <textarea class="form-control" id="editNoticeContentTa" rows="4"></textarea>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="editNoticeCategory" class="form-label">Category *</label>
-                                    <select class="form-select" id="editNoticeCategory" required>
-                                        <option value="">Select Category</option>
-                                        <option value="tender">Tender</option>
-                                        <option value="circular">Circular</option>
-                                        <option value="event">Event</option>
-                                        <option value="general">General</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="editNoticePriority" class="form-label">Priority</label>
-                                    <select class="form-select" id="editNoticePriority">
-                                        <option value="false">Normal</option>
-                                        <option value="true">Urgent</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="mb-3">
-                                    <label for="editNoticeExpiry" class="form-label">Expiry Date *</label>
-                                    <input type="date" class="form-control" id="editNoticeExpiry" required>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="editNoticeFile" class="form-label">Update File (Optional)</label>
-                            <input type="file" class="form-control" id="editNoticeFile" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png">
-                            <div id="editCurrentFile" class="mt-2"></div>
-                        </div>
-                    </form>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="content">Content (English) *</label>
+                        <textarea id="content" name="content" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="content_ta">Content (Tamil)</label>
+                        <textarea id="content_ta" name="content_ta"></textarea>
+                    </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="updateNotice()">
-                        <i class="fas fa-save"></i> Update Notice
-                    </button>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="category">Category *</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="tender">Tender</option>
+                            <option value="circular">Circular</option>
+                            <option value="event">Event</option>
+                            <option value="general">General</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="priority">Priority</label>
+                        <select id="priority" name="priority">
+                            <option value="false">Normal</option>
+                            <option value="true">Urgent</option>
+                        </select>
+                    </div>
                 </div>
+
+                <div class="form-group">
+                    <label for="expiry_date">Expiry Date *</label>
+                    <input type="date" id="expiry_date" name="expiry_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="file">Attach File (Optional)</label>
+                    <div class="file-upload" onclick="document.getElementById('file').click()">
+                        <p>📎 Drag and drop a file here, or click to select</p>
+                        <input type="file" id="file" name="file" style="display: none;">
+                        <span id="fileName"></span>
+                    </div>
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary">✅ Create Notice</button>
+                    <button type="button" class="btn btn-secondary" onclick="resetForm()">🔄 Reset Form</button>
+                </div>
+            </form>
+        </div>
+
+        <div id="manage-notices" class="tab-content">
+            <h2 style="margin-bottom: 1.5rem; color: #2c3e50;">📝 Manage Active Notices</h2>
+            
+            <div class="search-filter">
+                <input type="text" id="searchInput" placeholder="🔍 Search notices..." onkeyup="filterNotices()">
+                <select id="categoryFilter" onchange="filterNotices()">
+                    <option value="">All Categories</option>
+                    <option value="tender">Tender</option>
+                    <option value="circular">Circular</option>
+                    <option value="event">Event</option>
+                    <option value="general">General</option>
+                </select>
+                <select id="priorityFilter" onchange="filterNotices()">
+                    <option value="">All Priorities</option>
+                    <option value="true">Urgent</option>
+                    <option value="false">Normal</option>
+                </select>
             </div>
+
+            <div id="activeNotices" class="notices-grid"></div>
+        </div>
+
+        <div id="archived" class="tab-content">
+            <h2 style="margin-bottom: 1.5rem; color: #2c3e50;">🗄️ Archived Notices</h2>
+            
+            <button class="btn btn-danger" onclick="clearAllArchived()" style="margin-bottom: 1rem;">
+                🗑️ Clear All Archived
+            </button>
+            
+            <div id="archivedNotices" class="notices-grid"></div>
         </div>
     </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <!-- Edit Modal -->
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <h3 style="margin-bottom: 1.5rem; color: #2c3e50;">✏️ Edit Notice</h3>
+            <form id="editNoticeForm">
+                <input type="hidden" id="editId" name="id">
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editTitle">Title (English) *</label>
+                        <input type="text" id="editTitle" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="editTitleTa">Title (Tamil)</label>
+                        <input type="text" id="editTitleTa" name="title_ta">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editContent">Content (English) *</label>
+                        <textarea id="editContent" name="content" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="editContentTa">Content (Tamil)</label>
+                        <textarea id="editContentTa" name="content_ta"></textarea>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="editCategory">Category *</label>
+                        <select id="editCategory" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="tender">Tender</option>
+                            <option value="circular">Circular</option>
+                            <option value="event">Event</option>
+                            <option value="general">General</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="editPriority">Priority</label>
+                        <select id="editPriority" name="priority">
+                            <option value="false">Normal</option>
+                            <option value="true">Urgent</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="editExpiryDate">Expiry Date *</label>
+                    <input type="date" id="editExpiryDate" name="expiry_date" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="editFile">Update File (Optional)</label>
+                    <input type="file" id="editFile" name="file">
+                </div>
+
+                <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">❌ Cancel</button>
+                    <button type="submit" class="btn btn-primary">💾 Update Notice</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <script>
-        
-        let allNotices = [];
+        // Global variables
+        let notices = [];
         let archivedNotices = [];
 
-        
+        // Live Translation Function
+        async function translateToTamil(text) {
+            if (!text || text.trim() === '') return '';
+            
+            try {
+                // Using Google Translate API
+                const response = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=en|ta`);
+                const data = await response.json();
+                
+                if (data.responseData && data.responseData.translatedText) {
+                    return data.responseData.translatedText;
+                }
+                
+                // Fallback: Basic word mapping for common words
+                const basicTranslations = {
+                    'notice': 'அறிவிப்பு',
+                    'tender': 'டெண்டர்',
+                    'maintenance': 'பராமரிப்பு',
+                    'water': 'நீர்',
+                    'supply': 'வழங்கல்',
+                    'electricity': 'மின்சாரம்',
+                    'bill': 'கட்டணம்',
+                    'payment': 'செலுத்துதல்',
+                    'health': 'சுகாதார',
+                    'camp': 'முகாம்',
+                    'community': 'சமூக',
+                    'road': 'சாலை',
+                    'project': 'திட்டம்',
+                    'date': 'தேதி',
+                    'time': 'நேரம்',
+                    'from': 'முதல்',
+                    'to': 'வரை',
+                    'all': 'அனைத்து',
+                    'residents': 'குடியிருப்பாளர்கள்',
+                    'free': 'இலவச',
+                    'august': 'ஆகஸ்ட்',
+                    'september': 'செப்டம்பர்',
+                    'october': 'அக்டோபர்'
+                };
+                
+                let translatedText = text;
+                for (const [english, tamil] of Object.entries(basicTranslations)) {
+                    const regex = new RegExp(english, 'gi');
+                    translatedText = translatedText.replace(regex, tamil);
+                }
+                
+                return translatedText;
+            } catch (error) {
+                console.log('Translation error:', error);
+                return text; // Return original text if translation fails
+            }
+        }
+
+        // Add live translation event listeners
         document.addEventListener('DOMContentLoaded', function() {
-            loadDashboardData();
-            setupFileUpload();
-            setMinDate();
+            const titleInput = document.getElementById('title');
+            const contentInput = document.getElementById('content');
+            const titleTaInput = document.getElementById('title_ta');
+            const contentTaInput = document.getElementById('content_ta');
+
+            // Live translation for title
+            let titleTimeout;
+            titleInput.addEventListener('input', function() {
+                clearTimeout(titleTimeout);
+                titleTimeout = setTimeout(async () => {
+                    const translatedTitle = await translateToTamil(this.value);
+                    titleTaInput.value = translatedTitle;
+                }, 1000); // 1 second delay to avoid too many API calls
+            });
+
+            // Live translation for content
+            let contentTimeout;
+            contentInput.addEventListener('input', function() {
+                clearTimeout(contentTimeout);
+                contentTimeout = setTimeout(async () => {
+                    const translatedContent = await translateToTamil(this.value);
+                    contentTaInput.value = translatedContent;
+                }, 1000); // 1 second delay to avoid too many API calls
+            });
+
+            // Also add translation for edit modal fields
+            const editTitleInput = document.getElementById('editTitle');
+            const editContentInput = document.getElementById('editContent');
+            const editTitleTaInput = document.getElementById('editTitleTa');
+            const editContentTaInput = document.getElementById('editContentTa');
+
+            // Live translation for edit title
+            let editTitleTimeout;
+            editTitleInput.addEventListener('input', function() {
+                clearTimeout(editTitleTimeout);
+                editTitleTimeout = setTimeout(async () => {
+                    const translatedTitle = await translateToTamil(this.value);
+                    editTitleTaInput.value = translatedTitle;
+                }, 1000);
+            });
+
+            // Live translation for edit content
+            let editContentTimeout;
+            editContentInput.addEventListener('input', function() {
+                clearTimeout(editContentTimeout);
+                editContentTimeout = setTimeout(async () => {
+                    const translatedContent = await translateToTamil(this.value);
+                    editContentTaInput.value = translatedContent;
+                }, 1000);
+            });
         });
 
-        
-        function setMinDate() {
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('noticeExpiry').setAttribute('min', today);
-            document.getElementById('editNoticeExpiry').setAttribute('min', today);
-        }
-
-        
-        function setupFileUpload() {
-            const fileUploadArea = document.getElementById('fileUploadArea');
-            const fileInput = document.getElementById('noticeFile');
-
-            fileUploadArea.addEventListener('click', () => fileInput.click());
-            fileUploadArea.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                fileUploadArea.classList.add('dragover');
+        // Tab functionality
+        document.querySelectorAll('.nav-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                const tabId = this.getAttribute('data-tab');
+                switchTab(tabId);
             });
-            fileUploadArea.addEventListener('dragleave', () => {
-                fileUploadArea.classList.remove('dragover');
-            });
-            fileUploadArea.addEventListener('drop', (e) => {
-                e.preventDefault();
-                fileUploadArea.classList.remove('dragover');
-                fileInput.files = e.dataTransfer.files;
-                updateFileInfo();
-            });
+        });
 
-            fileInput.addEventListener('change', updateFileInfo);
-        }
-
-        function updateFileInfo() {
-            const fileInput = document.getElementById('noticeFile');
-            const fileInfo = document.getElementById('fileInfo');
+        function switchTab(tabId) {
+            // Remove active class from all tabs and content
+            document.querySelectorAll('.nav-tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             
-            if (fileInput.files.length > 0) {
-                const file = fileInput.files[0];
-                fileInfo.innerHTML = `
-                    <div class="alert alert-info">
-                        <i class="fas fa-file"></i> Selected: ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)
-                    </div>
-                `;
-            } else {
-                fileInfo.innerHTML = '';
+            // Add active class to clicked tab and corresponding content
+            document.querySelector(`[data-tab="${tabId}"]`).classList.add('active');
+            document.getElementById(tabId).classList.add('active');
+            
+            // Load data based on active tab
+            if (tabId === 'dashboard') {
+                loadStats();
+            } else if (tabId === 'manage-notices') {
+                loadNotices();
+            } else if (tabId === 'archived') {
+                loadArchivedNotices();
             }
         }
 
-        
-        async function loadDashboardData() {
+        // Load statistics
+        async function loadStats() {
             try {
-                const [statsResponse, noticesResponse] = await Promise.all([
-                    fetch('/api/stats'),
-                    fetch('/api/notices')
-                ]);
-
-                const stats = await statsResponse.json();
-                allNotices = await noticesResponse.json();
-
-                updateDashboardStats(stats);
-                loadRecentActivities();
-                loadManageNotices();
+                const response = await fetch('/api/stats');
+                const stats = await response.json();
+                
+                document.getElementById('totalActive').textContent = stats.totalActive;
+                document.getElementById('totalUrgent').textContent = stats.totalUrgent;
+                document.getElementById('totalToday').textContent = stats.totalToday;
+                document.getElementById('totalArchived').textContent = stats.totalArchived;
             } catch (error) {
-                console.error('Error loading dashboard data:', error);
-                showAlert('Error loading dashboard data', 'danger');
+                console.error('Error loading stats:', error);
+                showNotification('Error loading statistics', 'error');
             }
         }
 
-       
-        function updateDashboardStats(stats) {
-            document.getElementById('dashTotalNotices').textContent = stats.totalActive;
-            document.getElementById('dashUrgentCount').textContent = stats.totalUrgent;
-            document.getElementById('dashTodayCount').textContent = stats.totalToday;
-            document.getElementById('dashArchivedCount').textContent = stats.totalArchived;
+        // Load active notices
+        async function loadNotices() {
+            try {
+                const response = await fetch('/api/notices?archived=false');
+                notices = await response.json();
+                displayNotices(notices, 'activeNotices');
+            } catch (error) {
+                console.error('Error loading notices:', error);
+                showNotification('Error loading notices', 'error');
+            }
         }
 
-       
-        function loadRecentActivities() {
-            const recentActivities = document.getElementById('recentActivities');
-            const recentNotices = allNotices
-                .sort((a, b) => new Date(b.date_posted) - new Date(a.date_posted))
-                .slice(0, 5);
+        // Load archived notices
+        async function loadArchivedNotices() {
+            try {
+                const response = await fetch('/api/notices?archived=true');
+                archivedNotices = await response.json();
+                displayNotices(archivedNotices, 'archivedNotices', true);
+            } catch (error) {
+                console.error('Error loading archived notices:', error);
+                showNotification('Error loading archived notices', 'error');
+            }
+        }
 
-            if (recentNotices.length === 0) {
-                recentActivities.innerHTML = '<p class="text-muted">No recent activities</p>';
+        // Display notices
+        function displayNotices(noticesList, containerId, isArchived = false) {
+            const container = document.getElementById(containerId);
+            
+            if (noticesList.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: #7f8c8d; padding: 2rem;">No notices found.</p>';
                 return;
             }
-
-            const activitiesHTML = recentNotices.map(notice => `
-                <div class="border-bottom pb-2 mb-2">
-                    <small class="text-muted">${formatDate(notice.date_posted)}</small>
-                    <div class="fw-bold">${notice.title}</div>
-                    <small class="text-muted">Category: ${capitalizeFirst(notice.category)}</small>
+            
+            container.innerHTML = noticesList.map(notice => `
+                <div class="notice-card ${notice.priority ? 'priority' : ''}">
+                    <div class="notice-header">
+                        <div>
+                            <div class="notice-title">${notice.title}</div>
+                            <div class="notice-meta">
+                                <span>📅 ${notice.date_posted}</span>
+                                <span>⏰ Expires: ${notice.expiry_date}</span>
+                                <span>📂 ${notice.category}</span>
+                                ${notice.priority ? '<span>🚨 Urgent</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="notice-content">${notice.content}</div>
+                    ${notice.file_path ? `<p>📎 <a href="/${notice.file_path}" target="_blank">View Attachment</a></p>` : ''}
+                    <div class="notice-actions">
+                        ${!isArchived ? `
+                            <button class="btn btn-primary" onclick="editNotice(${notice.id})">✏️ Edit</button>
+                            <button class="btn btn-secondary" onclick="archiveNotice(${notice.id})">🗄️ Archive</button>
+                            <button class="btn btn-danger" onclick="deleteNotice(${notice.id})">🗑️ Delete</button>
+                        ` : `
+                            <button class="btn btn-danger" onclick="deleteNotice(${notice.id})">🗑️ Delete</button>
+                        `}
+                    </div>
                 </div>
             `).join('');
-
-            recentActivities.innerHTML = activitiesHTML;
         }
 
-        function loadManageNotices() {
-            const manageList = document.getElementById('manageNoticesList');
+        // Filter notices
+        function filterNotices() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const priorityFilter = document.getElementById('priorityFilter').value;
             
-            if (allNotices.length === 0) {
-                manageList.innerHTML = '<p class="text-muted">No active notices found</p>';
-                return;
-            }
-
-            const noticesHTML = allNotices.map(notice => createManageNoticeItem(notice)).join('');
-            manageList.innerHTML = noticesHTML;
-        }
-
-        
-        function createManageNoticeItem(notice) {
-            const urgentClass = notice.priority ? 'urgent' : '';
-            const urgentBadge = notice.priority ? '<span class="urgent-badge me-2">URGENT</span>' : '';
-            const categoryBadge = `<span class="category-badge">${capitalizeFirst(notice.category)}</span>`;
+            let filteredNotices = notices.filter(notice => {
+                const matchesSearch = notice.title.toLowerCase().includes(searchTerm) || 
+                                    notice.content.toLowerCase().includes(searchTerm);
+                const matchesCategory = !categoryFilter || notice.category === categoryFilter;
+                const matchesPriority = !priorityFilter || notice.priority.toString() === priorityFilter;
+                
+                return matchesSearch && matchesCategory && matchesPriority;
+            });
             
-            return `
-                <div class="notice-item ${urgentClass}">
-                    <div class="notice-title">${notice.title}</div>
-                    <div class="notice-meta">
-                        Posted: ${formatDate(notice.date_posted)} | 
-                        Expires: ${formatDate(notice.expiry_date)} | 
-                        ${urgentBadge}${categoryBadge}
-                    </div>
-                    <div class="notice-content">${notice.content.substring(0, 150)}${notice.content.length > 150 ? '...' : ''}</div>
-                    <div class="notice-actions mt-3">
-                        <button class="btn btn-sm btn-warning" onclick="editNotice(${notice.id})">
-                            <i class="fas fa-edit"></i> Edit
-                        </button>
-                        <button class="btn btn-sm btn-info" onclick="archiveNotice(${notice.id})">
-                            <i class="fas fa-archive"></i> Archive
-                        </button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteNotice(${notice.id})">
-                            <i class="fas fa-trash"></i> Delete
-                        </button>
-                        ${notice.file_path ? `<button class="btn btn-sm btn-outline-primary" onclick="downloadFile('${notice.file_path}')">
-                            <i class="fas fa-download"></i> Download
-                        </button>` : ''}
-                    </div>
-                </div>
-            `;
+            displayNotices(filteredNotices, 'activeNotices');
         }
 
-        
+        // Form handling
         document.getElementById('addNoticeForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
-            const formData = new FormData();
-            formData.append('title', document.getElementById('noticeTitle').value);
-            formData.append('title_ta', document.getElementById('noticeTitleTa').value);
-            formData.append('content', document.getElementById('noticeContent').value);
-            formData.append('content_ta', document.getElementById('noticeContentTa').value);
-            formData.append('category', document.getElementById('noticeCategory').value);
-            formData.append('priority', document.getElementById('noticePriority').value);
-            formData.append('expiry_date', document.getElementById('noticeExpiry').value);
+            const formData = new FormData(this);
             
-            const fileInput = document.getElementById('noticeFile');
-            if (fileInput.files.length > 0) {
-                formData.append('file', fileInput.files[0]);
-            }
-
             try {
                 const response = await fetch('/api/notices', {
                     method: 'POST',
                     body: formData
                 });
-
+                
                 if (response.ok) {
-                    showAlert('Notice created successfully!', 'success');
-                    document.getElementById('addNoticeForm').reset();
-                    document.getElementById('fileInfo').innerHTML = '';
-                    loadDashboardData();
-                    switchTab('manage-notices');
+                    showNotification('Notice created successfully!', 'success');
+                    resetForm();
+                    loadStats();
                 } else {
                     throw new Error('Failed to create notice');
                 }
             } catch (error) {
                 console.error('Error creating notice:', error);
-                showAlert('Error creating notice', 'danger');
+                showNotification('Error creating notice', 'error');
             }
         });
 
-       
-        function editNotice(noticeId) {
-            const notice = allNotices.find(n => n.id === noticeId);
+        // Edit notice functionality
+        function editNotice(id) {
+            const notice = notices.find(n => n.id === id);
             if (!notice) return;
-
-            document.getElementById('editNoticeId').value = notice.id;
-            document.getElementById('editNoticeTitle').value = notice.title;
-            document.getElementById('editNoticeTitleTa').value = notice.title_ta || '';
-            document.getElementById('editNoticeContent').value = notice.content;
-            document.getElementById('editNoticeContentTa').value = notice.content_ta || '';
-            document.getElementById('editNoticeCategory').value = notice.category;
-            document.getElementById('editNoticePriority').value = notice.priority.toString();
-            document.getElementById('editNoticeExpiry').value = notice.expiry_date;
-
-            const currentFileDiv = document.getElementById('editCurrentFile');
-            if (notice.file_path) {
-                currentFileDiv.innerHTML = `
-                    <div class="alert alert-info">
-                        <i class="fas fa-file"></i> Current file: ${notice.file_path.split('/').pop()}
-                        <button type="button" class="btn btn-sm btn-outline-primary ms-2" onclick="downloadFile('${notice.file_path}')">
-                            <i class="fas fa-download"></i> Download
-                        </button>
-                    </div>
-                `;
-            } else {
-                currentFileDiv.innerHTML = '';
-            }
-
-            new bootstrap.Modal(document.getElementById('editNoticeModal')).show();
+            
+            document.getElementById('editId').value = notice.id;
+            document.getElementById('editTitle').value = notice.title;
+            document.getElementById('editTitleTa').value = notice.title_ta || '';
+            document.getElementById('editContent').value = notice.content;
+            document.getElementById('editContentTa').value = notice.content_ta || '';
+            document.getElementById('editCategory').value = notice.category;
+            document.getElementById('editPriority').value = notice.priority.toString();
+            document.getElementById('editExpiryDate').value = notice.expiry_date;
+            
+            document.getElementById('editModal').style.display = 'block';
         }
 
-        
-        async function updateNotice() {
-            const noticeId = document.getElementById('editNoticeId').value;
-            const formData = new FormData();
-            
-            formData.append('title', document.getElementById('editNoticeTitle').value);
-            formData.append('title_ta', document.getElementById('editNoticeTitleTa').value);
-            formData.append('content', document.getElementById('editNoticeContent').value);
-            formData.append('content_ta', document.getElementById('editNoticeContentTa').value);
-            formData.append('category', document.getElementById('editNoticeCategory').value);
-            formData.append('priority', document.getElementById('editNoticePriority').value);
-            formData.append('expiry_date', document.getElementById('editNoticeExpiry').value);
-            
-            const fileInput = document.getElementById('editNoticeFile');
-            if (fileInput.files.length > 0) {
-                formData.append('file', fileInput.files[0]);
-            }
+        function closeEditModal() {
+            document.getElementById('editModal').style.display = 'none';
+        }
 
+        // Edit form submission
+        document.getElementById('editNoticeForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const id = formData.get('id');
+            
             try {
-                const response = await fetch(`/api/notices/${noticeId}`, {
+                const response = await fetch(`/api/notices/${id}`, {
                     method: 'PUT',
                     body: formData
                 });
-
+                
                 if (response.ok) {
-                    showAlert('Notice updated successfully!', 'success');
-                    bootstrap.Modal.getInstance(document.getElementById('editNoticeModal')).hide();
-                    loadDashboardData();
+                    showNotification('Notice updated successfully!', 'success');
+                    closeEditModal();
+                    loadNotices();
+                    loadStats();
                 } else {
                     throw new Error('Failed to update notice');
                 }
             } catch (error) {
                 console.error('Error updating notice:', error);
-                showAlert('Error updating notice', 'danger');
+                showNotification('Error updating notice', 'error');
             }
-        }
+        });
 
-        
-        async function archiveNotice(noticeId) {
-            if (!confirm('Are you sure you want to archive this notice?')) return;
-
+        // Delete notice
+        async function deleteNotice(id) {
+            if (!confirm('Are you sure you want to delete this notice?')) return;
+            
             try {
-                const response = await fetch(`/api/notices/${noticeId}/archive`, {
-                    method: 'PUT'
-                });
-
-                if (response.ok) {
-                    showAlert('Notice archived successfully!', 'success');
-                    loadDashboardData();
-                } else {
-                    throw new Error('Failed to archive notice');
-                }
-            } catch (error) {
-                console.error('Error archiving notice:', error);
-                showAlert('Error archiving notice', 'danger');
-            }
-        }
-
-        
-        async function deleteNotice(noticeId) {
-            if (!confirm('Are you sure you want to permanently delete this notice?')) return;
-
-            try {
-                const response = await fetch(`/api/notices/${noticeId}`, {
+                const response = await fetch(`/api/notices/${id}`, {
                     method: 'DELETE'
                 });
-
+                
                 if (response.ok) {
-                    showAlert('Notice deleted successfully!', 'success');
-                    loadDashboardData();
+                    showNotification('Notice deleted successfully!', 'success');
+                    loadNotices();
+                    loadArchivedNotices();
+                    loadStats();
                 } else {
                     throw new Error('Failed to delete notice');
                 }
             } catch (error) {
                 console.error('Error deleting notice:', error);
-                showAlert('Error deleting notice', 'danger');
+                showNotification('Error deleting notice', 'error');
             }
         }
 
-        
-        async function loadArchivedNotices() {
+        // Archive notice
+        async function archiveNotice(id) {
             try {
-                const response = await fetch('/api/notices?archived=true');
-                archivedNotices = await response.json();
+                const response = await fetch(`/api/notices/${id}/archive`, {
+                    method: 'PUT'
+                });
                 
-                const archivedList = document.getElementById('archivedNoticesList');
-                
-                if (archivedNotices.length === 0) {
-                    archivedList.innerHTML = '<p class="text-muted">No archived notices found</p>';
-                    return;
+                if (response.ok) {
+                    showNotification('Notice archived successfully!', 'success');
+                    loadNotices();
+                    loadStats();
+                } else {
+                    throw new Error('Failed to archive notice');
                 }
-
-                const noticesHTML = archivedNotices.map(notice => createArchivedNoticeItem(notice)).join('');
-                archivedList.innerHTML = noticesHTML;
             } catch (error) {
-                console.error('Error loading archived notices:', error);
-                showAlert('Error loading archived notices', 'danger');
+                console.error('Error archiving notice:', error);
+                showNotification('Error archiving notice', 'error');
             }
         }
 
-        function createArchivedNoticeItem(notice) {
-            return `
-                <div class="notice-item">
-                    <div class="notice-title">${notice.title}</div>
-                    <div class="notice-meta">
-                        Posted: ${formatDate(notice.date_posted)} | 
-                        Expired: ${formatDate(notice.expiry_date)} | 
-                        Category: ${capitalizeFirst(notice.category)}
-                    </div>
-                    <div class="notice-content">${notice.content.substring(0, 150)}${notice.content.length > 150 ? '...' : ''}</div>
-                    <div class="notice-actions mt-3">
-                        <button class="btn btn-sm btn-danger" onclick="deleteNotice(${notice.id})">
-                            <i class="fas fa-trash"></i> Delete Permanently
-                        </button>
-                        ${notice.file_path ? `<button class="btn btn-sm btn-outline-primary" onclick="downloadFile('${notice.file_path}')">
-                            <i class="fas fa-download"></i> Download
-                        </button>` : ''}
-                    </div>
-                </div>
-            `;
-        }
-
-        function switchTab(tabId) {
-            const tab = document.getElementById(tabId + '-tab');
-            const tabInstance = new bootstrap.Tab(tab);
-            tabInstance.show();
-
-            if (tabId === 'archived') {
-                loadArchivedNotices();
-            }
-        }
-
-        function searchManageNotices() {
-            const searchTerm = document.getElementById('manageSearchInput').value.toLowerCase();
-            const filteredNotices = allNotices.filter(notice => 
-                notice.title.toLowerCase().includes(searchTerm) ||
-                notice.content.toLowerCase().includes(searchTerm) ||
-                notice.category.toLowerCase().includes(searchTerm)
-            );
-
-            const manageList = document.getElementById('manageNoticesList');
-            if (filteredNotices.length === 0) {
-                manageList.innerHTML = '<p class="text-muted">No notices found matching your search</p>';
-            } else {
-                const noticesHTML = filteredNotices.map(notice => createManageNoticeItem(notice)).join('');
-                manageList.innerHTML = noticesHTML;
-            }
-        }
-
+        // Archive expired notices
         async function archiveExpired() {
-            if (!confirm('Archive all expired notices?')) return;
-
             try {
                 const today = new Date().toISOString().split('T')[0];
-                const expiredNotices = allNotices.filter(notice => notice.expiry_date < today);
+                const expiredNotices = notices.filter(notice => notice.expiry_date < today);
                 
                 for (const notice of expiredNotices) {
-                    await fetch(`/api/notices/${notice.id}/archive`, { method: 'PUT' });
+                    await fetch(`/api/notices/${notice.id}/archive`, {
+                        method: 'PUT'
+                    });
                 }
-
-                showAlert(`${expiredNotices.length} expired notices archived successfully!`, 'success');
-                loadDashboardData();
+                
+                showNotification(`${expiredNotices.length} expired notices archived!`, 'success');
+                loadNotices();
+                loadStats();
             } catch (error) {
                 console.error('Error archiving expired notices:', error);
-                showAlert('Error archiving expired notices', 'danger');
+                showNotification('Error archiving expired notices', 'error');
             }
         }
-        async function clearAllArchived() {
-            if (!confirm('Are you sure you want to permanently delete all archived notices? This action cannot be undone.')) return;
 
+        // Clear all archived notices
+        async function clearAllArchived() {
+            if (!confirm('Are you sure you want to delete all archived notices? This action cannot be undone.')) return;
+            
             try {
                 for (const notice of archivedNotices) {
-                    await fetch(`/api/notices/${notice.id}`, { method: 'DELETE' });
+                    await fetch(`/api/notices/${notice.id}`, {
+                        method: 'DELETE'
+                    });
                 }
-
-                showAlert('All archived notices deleted successfully!', 'success');
+                
+                showNotification('All archived notices cleared!', 'success');
                 loadArchivedNotices();
-                loadDashboardData();
+                loadStats();
             } catch (error) {
                 console.error('Error clearing archived notices:', error);
-                showAlert('Error clearing archived notices', 'danger');
+                showNotification('Error clearing archived notices', 'error');
             }
         }
 
-        function downloadFile(filePath) {
-            if (filePath) {
-                window.open(`/${filePath}`, '_blank');
-            }
+        // Reset form
+        function resetForm() {
+            document.getElementById('addNoticeForm').reset();
+            document.getElementById('fileName').textContent = '';
         }
 
-        function refreshData() {
-            loadDashboardData();
-            showAlert('Data refreshed successfully!', 'info');
-        }
-
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-IN', {
-                year: 'numeric',
-                month: 'short',
-                day: 'numeric'
-            });
-        }
-
-        function capitalizeFirst(str) {
-            return str.charAt(0).toUpperCase() + str.slice(1);
-        }
-
-        function showAlert(message, type) {
-            const alertDiv = document.createElement('div');
-            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
-            alertDiv.innerHTML = `
-                ${message}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            `;
-            
-            document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.admin-container'));
-            
-            setTimeout(() => {
-                alertDiv.remove();
-            }, 5000);
-        }
-
-        document.getElementById('archived-tab').addEventListener('shown.bs.tab', function () {
-            loadArchivedNotices();
+        // File upload handling
+        document.getElementById('file').addEventListener('change', function() {
+            const fileName = this.files[0]?.name || '';
+            document.getElementById('fileName').textContent = fileName ? `Selected: ${fileName}` : '';
         });
 
-        setInterval(loadDashboardData, 5 * 60 * 1000);
+        // Drag and drop functionality
+        const fileUpload = document.querySelector('.file-upload');
+        
+        fileUpload.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            this.classList.add('dragover');
+        });
+        
+        fileUpload.addEventListener('dragleave', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+        });
+        
+        fileUpload.addEventListener('drop', function(e) {
+            e.preventDefault();
+            this.classList.remove('dragover');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                document.getElementById('file').files = files;
+                document.getElementById('fileName').textContent = `Selected: ${files[0].name}`;
+            }
+        });
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                color: white;
+                z-index: 10000;
+                font-weight: 500;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                animation: slideInRight 0.3s ease;
+            `;
+            
+            if (type === 'success') {
+                notification.style.background = 'linear-gradient(135deg, #27ae60, #229954)';
+                notification.textContent = `✅ ${message}`;
+            } else if (type === 'error') {
+                notification.style.background = 'linear-gradient(135deg, #e74c3c, #c0392b)';
+                notification.textContent = `❌ ${message}`;
+            } else {
+                notification.style.background = 'linear-gradient(135deg, #3498db, #2980b9)';
+                notification.textContent = `ℹ️ ${message}`;
+            }
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOutRight 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // Add CSS for animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideInRight {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            
+            @keyframes slideOutRight {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Set minimum date for expiry date inputs
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('expiry_date').min = today;
+            document.getElementById('editExpiryDate').min = today;
+        });
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            loadStats();
+            // Auto-refresh stats every 30 seconds
+            setInterval(loadStats, 30000);
+        });
     </script>
 </body>
 </html>
