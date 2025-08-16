@@ -7,3 +7,20 @@ git push
 TO UPDATE:
 
 git pull
+
+
+Quick setup guide:
+create/text Connections in sql
+
+server.js:
+
+    javascript
+    const dbConfig = {
+        host: 'localhost',
+        user: 'eboard_user',        // Change this
+        password: 'your_password',   // Change this
+        database: 'neyveli_eboard'
+    };
+
+bash
+    npm run dev
